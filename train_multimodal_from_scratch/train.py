@@ -73,6 +73,8 @@ class VLM(PreTrainedModel):
         
         num_images, num_image_patches, embed_dim = image_features.shape
         batch_indices, image_indices = torch.where(input_ids == self.tokenizer('<|image_pad|>')['input_ids'][0])
+        # print(self.tokenizer('<|image_pad|>')) 
+        # {'input_ids': [151655], 'attention_mask': [1]}
         
         inputs_embeds[batch_indices, image_indices] = image_features.view(-1, embed_dim)
         
