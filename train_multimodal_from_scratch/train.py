@@ -51,7 +51,7 @@ class VLM(PreTrainedModel):
     def forward(self, input_ids, labels, pixel_values, attention_mask=None):
         text_embeds = self.llm_model.get_input_embeddings()(input_ids)
         
-        image_embeds = self.vision_model.vision_model(pixel_values).last_hidden_state 
+        image_embeds = self.vision_model.vision_model(pixel_values).last_hidden_state # last_hidden_state.shape: (1，196，768)
         b, s, d = image_embeds.shape
         image_embeds = image_embeds.view(b, -1, d*4)  # (b, 196, d) --> (b, 49, d*4) 压缩图片tokens
         image_features = self.linear2(F.silu(self.linear1(image_embeds)))
